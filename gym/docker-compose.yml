@@ -1,0 +1,23 @@
+# docker-compose.yml
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    environment:
+      - POSTGRES_DB=gym
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=dev17
+    ports:
+      - "5433:5433"
+
+  web:
+    build: .
+    environment:
+      - DATABASE_URL=psql://gym:gym@db:5432/gym
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+
